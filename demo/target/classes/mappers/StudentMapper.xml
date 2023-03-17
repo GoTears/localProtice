@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.huafa.demo.mybatis.mapper.StudentMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.huafa.demo.mybatis.entity.Student">
+        <id column="id" property="id" />
+        <result column="student_num" property="studentNum" />
+        <result column="name" property="name" />
+        <result column="email" property="email" />
+        <result column="phone" property="phone" />
+        <result column="sex" property="sex" />
+        <result column="hobby" property="hobby" />
+
+    </resultMap>
+    <select id="findAll" resultMap="BaseResultMap">
+        select * From sys_student
+    </select>
+
+<!--    学生信息增删改查mapper.xml-->
+    <select id="queryAll" resultType="student">
+    select * from st_name
+    </select>
+
+    <select id="queryByNum" resultType="student">
+        select * from st_name where student_num=#{student_num}
+    </select>
+
+    <insert id="addstu" parameterType="student">
+    insert into st_name(student_num,name,email,phone,hobby)
+    VALUES (#{student_num},#{name},#{email},#{phone},#{hobby},})
+    </insert>
+
+    <update id="updateStu" parameterType="student">
+    update st_name
+    <set>
+        name=#{name},email=#{email},phone=#{phone},hobby=#{hobby},student_num=#{student_num},
+    </set>
+        where student_num = #{student_num}
+    </update>
+
+    <delete id="deleteStu" parameterType="string">
+      delete from st_name where student_num=#{student_num}
+    </delete>
+
+
+
+<!--    分页查询-->
+    <select id="queryAllByPage" resultType="com.huafa.demo.mybatis.entity.Student">
+    select* from student1.student
+    </select>
+</mapper>
