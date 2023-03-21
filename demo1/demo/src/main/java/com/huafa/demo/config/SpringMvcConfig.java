@@ -15,6 +15,10 @@
  */
 package com.huafa.demo.config;
 
+import com.alibaba.fastjson.serializer.SerializerFeature;
+import com.alibaba.fastjson.support.config.FastJsonConfig;
+import com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter;
+//import jdk.internal.icu.util.CodePointTrie;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.convert.support.GenericConversionService;
@@ -72,13 +76,22 @@ public class SpringMvcConfig extends WebMvcConfigurationSupport {
         list.add(MediaType.TEXT_HTML);
         list.add(MediaType.TEXT_MARKDOWN);
         stringConverter.setSupportedMediaTypes(list);
-        MappingJackson2XmlHttpMessageConverter xmlConverter = new MappingJackson2XmlHttpMessageConverter();
-        xmlConverter.setDefaultCharset(Charset.forName("utf-8"));
-        List<MediaType> list2 = new ArrayList<MediaType>();
-        list2.add(MediaType.APPLICATION_XML);
-        xmlConverter.setSupportedMediaTypes(list2);
-        converters.add(0, stringConverter);
-        converters.add(0, xmlConverter);
+
+        FastJsonHttpMessageConverter fjConervter = new FastJsonHttpMessageConverter();
+        FastJsonConfig fjConfig = new FastJsonConfig();
+        fjConfig.setDateFormat("yyyy-MM-dd");
+        fjConfig.setCharset(Charset.forName("UTF-8"));
+        fjConfig.setSerializerFeatures(SerializerFeature.PrettyFormat, SerializerFeature.WriteNullListAsEmpty);
+        fjConervter.setFastJsonConfig(fjConfig);
+        converters.add(0,fjConervter);
+
+//        MappingJackson2XmlHttpMessageConverter xmlConverter = new MappingJackson2XmlHttpMessageConverter();
+//        xmlConverter.setDefaultCharset(Charset.forName("utf-8"));
+//        List<MediaType> list2 = new ArrayList<MediaType>();
+//        list2.add(MediaType.APPLICATION_XML);
+//        xmlConverter.setSupportedMediaTypes(list2);
+//        converters.add(0, stringConverter);
+//        converters.add(0, xmlConverter);
     }
 
     /* 忽略url大小写 */

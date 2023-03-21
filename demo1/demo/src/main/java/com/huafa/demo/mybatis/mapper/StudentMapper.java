@@ -18,19 +18,28 @@ public interface StudentMapper {
     @Select("select * from sys_student")
     List<Student>findAll();
 
-    //    新增数据
-    @Insert("insert into sys_student(student_num,name,email,phone,hobby) value(#(student_num),#(name),#(email),#(phone),#(hobby),)")
-    public int saveStuMsg(Student student);
-
-    //    删除数据
-    @Delete("delete from sys_student where id=#{id}")
-    public int deleteStuId(long id);
+    //查询学生列表分页功能
+    @Select("select * from sys_student LIMIT #{pageNum}, #{pageSize}")
+    List<Student> findStudentList(Integer pageNum, Integer pageSize);
 
     //    根据id查找
     @Select("select * from sys_student where id=#{id}")
-    public Student getId(long id);
+    Student findById(long id);
+
+    //    新增数据
+    @Insert("INSERT INTO sys_student (student_num,name,email,phone,sex,hobby) VALUES (#{studentNum},#{name},#{email},#{phone},#{sex},#{hobby})")
+    @Options(useGeneratedKeys = true,keyColumn = "id")
+    public int AddStudent(Student student);
+
+    //    删除数据
+    @Delete("delete from sys_student where id=#{id}")
+    public int DeleteStudent(long id);
+
+    //    根据id查找
+    //@Select("select * from sys_student where id=#{id}")
+    //public Student getId(long id);
 
     //更新数据
-    @Update("update student set student_num=#{student_num},name=#{name},email=#{email},phone=#{phone},hobby=#{hobby}")
-    public int updateStuMsg(Student student);
+    @Update("update student set student_num=#{student_num},name=#{name},email=#{email},phone=#{phone},hobby=#{hobby} whrere id=#{id}")
+    public int UpdateStudent(Student student);
 }

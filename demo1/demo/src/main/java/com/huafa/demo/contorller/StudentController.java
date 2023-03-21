@@ -1,11 +1,13 @@
 package com.huafa.demo.contorller;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.huafa.demo.dto.StudentDto;
 import com.huafa.demo.mybatis.entity.Student;
-import com.huafa.demo.service.StudentService;
+import com.huafa.demo.service.impl.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -17,19 +19,74 @@ import java.util.List;
  * @version: 1.0
  */
 @Controller
+@RestController
 @RequestMapping("student")
 public class StudentController {
+
     @Autowired
     StudentService studentService ;
 
-//    查询所有学生
+//        添加学生信息
+    public String addStudent(Student entity){
+        studentService.AddStudent(entity);
+        return "redirect:/student";
+    }
+
+//    删除学生信息
+    @PostMapping("DeleteStudent")
+    @ResponseBody
+    public StudentDto DeleteStudent(Long id){
+        StudentDto stuDto = new StudentDto();
+        int result = studentService.DeleteStudent(id);
+
+        if(result==1){
+            stuDto.setMsg("delete successfully!");
+            stuDto.setCode(result);
+        }else {
+            stuDto.setMsg("delete failed!");
+            stuDto.setCode(0);
+        }
+        stuDto.setData(null);
+        stuDto.setCount(result);
+        return stuDto;
+}
+
+//    修改学生信息
+    @RequestMapping("UpdateStudent")
+    @ResponseBody
+    public int UpdateStudent(Student student){
+     return studentService.UpdateStudent(student);
+
+    }
+
+
+    //    查询所有学生
     @RequestMapping("findAll")
     @ResponseBody
-    public List<Student> findAll(){
-        return studentService.findAll();
+    public StudentDto findAll(){
+        StudentDto stuDto = new StudentDto();
+        stuDto.setCode(0);
+        stuDto.setMsg("");
+        List<Student> studentList = studentService.findAll();
+        stuDto.setData(studentList);
+        stuDto.setCount(studentList.size());
+        return stuDto;
     }
-//    控制层新增学生信息
-//    @RequestMapping("")
-//    @ResponseBody
+
+//    查询学生id
+    @GetMapping("findById")
+    @ResponseBody
+    public Student findById(Long id){
+       return studentService.findById(id);
+    }
+
+
+//    分页功能Controller
+
+
+
+
+
+
 
 }

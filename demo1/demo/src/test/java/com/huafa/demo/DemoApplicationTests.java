@@ -1,12 +1,10 @@
 package com.huafa.demo;
 
 import com.huafa.demo.mybatis.entity.Student;
-import com.huafa.demo.service.StudentService;
+import com.huafa.demo.service.impl.StudentService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-
-import java.util.List;
 
 @SpringBootTest
 class DemoApplicationTests {
